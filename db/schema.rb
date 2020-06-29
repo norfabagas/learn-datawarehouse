@@ -25,9 +25,9 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_default"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["customer_id"], name: "index_addresses_on_customer_id", unique: true
+    t.index ["customer_id"], name: "index_addresses_on_customer_id"
     t.index ["postal_code_id"], name: "index_addresses_on_postal_code_id"
-    t.index ["village_id"], name: "index_addresses_on_village_id", unique: true
+    t.index ["village_id"], name: "index_addresses_on_village_id"
   end
 
   create_table "cart_details", force: :cascade do |t|
@@ -170,7 +170,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_active", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["item_category_id"], name: "index_items_on_item_category_id", unique: true
+    t.index ["item_category_id"], name: "index_items_on_item_category_id"
   end
 
   create_table "postal_codes", force: :cascade do |t|
@@ -195,8 +195,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.decimal "quantity", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["item_id"], name: "index_receive_order_details_on_item_id", unique: true
-    t.index ["receive_order_id"], name: "index_receive_order_details_on_receive_order_id", unique: true
+    t.index ["item_id"], name: "index_receive_order_details_on_item_id"
+    t.index ["receive_order_id"], name: "index_receive_order_details_on_receive_order_id"
   end
 
   create_table "receive_orders", force: :cascade do |t|

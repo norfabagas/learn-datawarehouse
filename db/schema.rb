@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_005207) do
+ActiveRecord::Schema.define(version: 2020_06_29_010045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,22 @@ ActiveRecord::Schema.define(version: 2020_06_29_005207) do
     t.index ["city_id"], name: "index_districts_on_city_id"
   end
 
+  create_table "item_categories", force: :cascade do |t|
+    t.string "category"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.bigint "item_category_id"
+    t.string "name", null: false
+    t.decimal "sap_code", null: false
+    t.boolean "is_active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_category_id"], name: "index_items_on_item_category_id"
+  end
+
   create_table "postal_codes", force: :cascade do |t|
     t.bigint "village_id"
     t.string "post_code", null: false
@@ -154,6 +170,26 @@ ActiveRecord::Schema.define(version: 2020_06_29_005207) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "receive_order_details", force: :cascade do |t|
+    t.bigint "receive_order_id"
+    t.bigint "item_id"
+    t.decimal "cogs", null: false
+    t.decimal "price", null: false
+    t.decimal "quantity", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_receive_order_details_on_item_id"
+    t.index ["receive_order_id"], name: "index_receive_order_details_on_receive_order_id"
+  end
+
+  create_table "receive_orders", force: :cascade do |t|
+    t.bigint "store_id"
+    t.time "receive_date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["store_id"], name: "index_receive_orders_on_store_id"
   end
 
   create_table "stores", force: :cascade do |t|
@@ -193,7 +229,11 @@ ActiveRecord::Schema.define(version: 2020_06_29_005207) do
   add_foreign_key "digital_wallets", "customers"
   add_foreign_key "digital_wallets", "digital_wallet_lists"
   add_foreign_key "districts", "cities"
+  add_foreign_key "items", "item_categories"
   add_foreign_key "postal_codes", "villages"
+  add_foreign_key "receive_order_details", "items"
+  add_foreign_key "receive_order_details", "receive_orders"
+  add_foreign_key "receive_orders", "stores"
   add_foreign_key "sub_districts", "districts"
   add_foreign_key "villages", "sub_districts"
 end

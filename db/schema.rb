@@ -158,7 +158,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
   end
 
   create_table "item_categories", force: :cascade do |t|
-    t.string "category"
+    t.string "category_name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.bigint "item_category_id"
     t.string "name", null: false
     t.decimal "sap_code", null: false
-    t.boolean "is_active"
+    t.boolean "is_active", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["item_category_id"], name: "index_items_on_item_category_id"
@@ -210,7 +210,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
   create_table "stores", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
-    t.boolean "is_active"
+    t.boolean "is_active", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -239,14 +239,14 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
   end
 
   create_table "transaction_statuses", force: :cascade do |t|
-    t.string "status_name"
+    t.string "status_name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "transaction_types", force: :cascade do |t|
     t.string "transaction_name", null: false
-    t.boolean "is_active"
+    t.boolean "is_active", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

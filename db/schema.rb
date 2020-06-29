@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_003621) do
+ActiveRecord::Schema.define(version: 2020_06_29_004506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,20 @@ ActiveRecord::Schema.define(version: 2020_06_29_003621) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "credit_cards", force: :cascade do |t|
+    t.bigint "credit_card_list_id"
+    t.bigint "customer_id"
+    t.string "holder_name", null: false
+    t.string "cvc", null: false
+    t.date "valid_until", null: false
+    t.boolean "is_active"
+    t.boolean "is_default"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["credit_card_list_id"], name: "index_credit_cards_on_credit_card_list_id"
+    t.index ["customer_id"], name: "index_credit_cards_on_customer_id"
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "customer_code", null: false
     t.string "name", null: false
@@ -67,12 +81,38 @@ ActiveRecord::Schema.define(version: 2020_06_29_003621) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "debit_cards", force: :cascade do |t|
+    t.bigint "debit_card_list_id"
+    t.bigint "customer_id"
+    t.string "holder_name", null: false
+    t.string "card_number", null: false
+    t.boolean "is_active"
+    t.boolean "is_default"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_debit_cards_on_customer_id"
+    t.index ["debit_card_list_id"], name: "index_debit_cards_on_debit_card_list_id"
+  end
+
   create_table "digital_wallet_lists", force: :cascade do |t|
     t.string "name", null: false
     t.string "detail", null: false
     t.boolean "is_active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "digital_wallets", force: :cascade do |t|
+    t.bigint "digital_wallet_list_id"
+    t.bigint "customer_id"
+    t.string "name", null: false
+    t.string "detail", null: false
+    t.boolean "is_active"
+    t.boolean "is_default"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_digital_wallets_on_customer_id"
+    t.index ["digital_wallet_list_id"], name: "index_digital_wallets_on_digital_wallet_list_id"
   end
 
   create_table "districts", force: :cascade do |t|
@@ -117,6 +157,12 @@ ActiveRecord::Schema.define(version: 2020_06_29_003621) do
   add_foreign_key "addresses", "postal_codes"
   add_foreign_key "addresses", "villages"
   add_foreign_key "cities", "provinces"
+  add_foreign_key "credit_cards", "credit_card_lists"
+  add_foreign_key "credit_cards", "customers"
+  add_foreign_key "debit_cards", "customers"
+  add_foreign_key "debit_cards", "debit_card_lists"
+  add_foreign_key "digital_wallets", "customers"
+  add_foreign_key "digital_wallets", "digital_wallet_lists"
   add_foreign_key "districts", "cities"
   add_foreign_key "postal_codes", "villages"
   add_foreign_key "sub_districts", "districts"

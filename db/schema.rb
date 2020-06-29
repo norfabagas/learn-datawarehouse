@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_010045) do
+ActiveRecord::Schema.define(version: 2020_06_29_011344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,21 @@ ActiveRecord::Schema.define(version: 2020_06_29_010045) do
     t.index ["customer_id"], name: "index_addresses_on_customer_id"
     t.index ["postal_code_id"], name: "index_addresses_on_postal_code_id"
     t.index ["village_id"], name: "index_addresses_on_village_id"
+  end
+
+  create_table "cart_details", force: :cascade do |t|
+    t.bigint "receive_order_detail_id"
+    t.bigint "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_cart_details_on_item_id"
+    t.index ["receive_order_detail_id"], name: "index_cart_details_on_receive_order_detail_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.decimal "discount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "cashier_sessions", force: :cascade do |t|
@@ -208,6 +223,55 @@ ActiveRecord::Schema.define(version: 2020_06_29_010045) do
     t.index ["district_id"], name: "index_sub_districts_on_district_id"
   end
 
+  create_table "transaction_payment_details", force: :cascade do |t|
+    t.bigint "transaction_payment_id"
+    t.time "invoice_date"
+    t.string "invoice_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["transaction_payment_id"], name: "index_transaction_payment_details_on_transaction_payment_id"
+  end
+
+  create_table "transaction_payments", force: :cascade do |t|
+    t.decimal "payment_sum", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "transaction_statuses", force: :cascade do |t|
+    t.string "status_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "transaction_types", force: :cascade do |t|
+    t.string "transaction_name", null: false
+    t.boolean "is_active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.bigint "customer_id"
+    t.bigint "cart_id"
+    t.bigint "transaction_type_id"
+    t.bigint "transaction_status_id"
+    t.bigint "transaction_payment_id"
+    t.bigint "cashier_session_id"
+    t.string "transaction_code", null: false
+    t.string "transaction_reference"
+    t.time "commited_at"
+    t.time "void_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cart_id"], name: "index_transactions_on_cart_id"
+    t.index ["cashier_session_id"], name: "index_transactions_on_cashier_session_id"
+    t.index ["customer_id"], name: "index_transactions_on_customer_id"
+    t.index ["transaction_payment_id"], name: "index_transactions_on_transaction_payment_id"
+    t.index ["transaction_status_id"], name: "index_transactions_on_transaction_status_id"
+    t.index ["transaction_type_id"], name: "index_transactions_on_transaction_type_id"
+  end
+
   create_table "villages", force: :cascade do |t|
     t.bigint "sub_district_id"
     t.string "name", null: false
@@ -219,6 +283,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_010045) do
   add_foreign_key "addresses", "customers"
   add_foreign_key "addresses", "postal_codes"
   add_foreign_key "addresses", "villages"
+  add_foreign_key "cart_details", "items"
+  add_foreign_key "cart_details", "receive_order_details"
   add_foreign_key "cashier_sessions", "cashier_users"
   add_foreign_key "cashier_sessions", "stores"
   add_foreign_key "cities", "provinces"
@@ -235,5 +301,12 @@ ActiveRecord::Schema.define(version: 2020_06_29_010045) do
   add_foreign_key "receive_order_details", "receive_orders"
   add_foreign_key "receive_orders", "stores"
   add_foreign_key "sub_districts", "districts"
+  add_foreign_key "transaction_payment_details", "transaction_payments"
+  add_foreign_key "transactions", "carts"
+  add_foreign_key "transactions", "cashier_sessions"
+  add_foreign_key "transactions", "customers"
+  add_foreign_key "transactions", "transaction_payments"
+  add_foreign_key "transactions", "transaction_statuses"
+  add_foreign_key "transactions", "transaction_types"
   add_foreign_key "villages", "sub_districts"
 end

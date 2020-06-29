@@ -25,18 +25,16 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_default"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["customer_id"], name: "index_addresses_on_customer_id"
+    t.index ["customer_id"], name: "index_addresses_on_customer_id", unique: true
     t.index ["postal_code_id"], name: "index_addresses_on_postal_code_id"
-    t.index ["village_id"], name: "index_addresses_on_village_id"
+    t.index ["village_id"], name: "index_addresses_on_village_id", unique: true
   end
 
   create_table "cart_details", force: :cascade do |t|
     t.bigint "receive_order_detail_id"
-    t.bigint "item_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["item_id"], name: "index_cart_details_on_item_id"
-    t.index ["receive_order_detail_id"], name: "index_cart_details_on_receive_order_detail_id"
+    t.index ["receive_order_detail_id"], name: "index_cart_details_on_receive_order_detail_id", unique: true
   end
 
   create_table "carts", force: :cascade do |t|
@@ -52,14 +50,15 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.time "ended_at", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["cashier_user_id"], name: "index_cashier_sessions_on_cashier_user_id"
-    t.index ["store_id"], name: "index_cashier_sessions_on_store_id"
+    t.index ["cashier_user_id"], name: "index_cashier_sessions_on_cashier_user_id", unique: true
+    t.index ["store_id"], name: "index_cashier_sessions_on_store_id", unique: true
   end
 
   create_table "cashier_users", force: :cascade do |t|
-    t.string "identity_numeer", null: false
+    t.string "identity_number", null: false
     t.string "name", null: false
     t.string "username", null: false
+    t.string "password", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -69,7 +68,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["province_id"], name: "index_cities_on_province_id"
+    t.index ["province_id"], name: "index_cities_on_province_id", unique: true
   end
 
   create_table "credit_card_lists", force: :cascade do |t|
@@ -90,8 +89,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_default"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["credit_card_list_id"], name: "index_credit_cards_on_credit_card_list_id"
-    t.index ["customer_id"], name: "index_credit_cards_on_customer_id"
+    t.index ["credit_card_list_id"], name: "index_credit_cards_on_credit_card_list_id", unique: true
+    t.index ["customer_id"], name: "index_credit_cards_on_customer_id", unique: true
   end
 
   create_table "customers", force: :cascade do |t|
@@ -124,8 +123,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_default"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["customer_id"], name: "index_debit_cards_on_customer_id"
-    t.index ["debit_card_list_id"], name: "index_debit_cards_on_debit_card_list_id"
+    t.index ["customer_id"], name: "index_debit_cards_on_customer_id", unique: true
+    t.index ["debit_card_list_id"], name: "index_debit_cards_on_debit_card_list_id", unique: true
   end
 
   create_table "digital_wallet_lists", force: :cascade do |t|
@@ -145,8 +144,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_default"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["customer_id"], name: "index_digital_wallets_on_customer_id"
-    t.index ["digital_wallet_list_id"], name: "index_digital_wallets_on_digital_wallet_list_id"
+    t.index ["customer_id"], name: "index_digital_wallets_on_customer_id", unique: true
+    t.index ["digital_wallet_list_id"], name: "index_digital_wallets_on_digital_wallet_list_id", unique: true
   end
 
   create_table "districts", force: :cascade do |t|
@@ -154,7 +153,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "CreateDistricts", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["city_id"], name: "index_districts_on_city_id"
+    t.index ["city_id"], name: "index_districts_on_city_id", unique: true
   end
 
   create_table "item_categories", force: :cascade do |t|
@@ -170,7 +169,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_active", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["item_category_id"], name: "index_items_on_item_category_id"
+    t.index ["item_category_id"], name: "index_items_on_item_category_id", unique: true
   end
 
   create_table "postal_codes", force: :cascade do |t|
@@ -178,7 +177,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "post_code", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["village_id"], name: "index_postal_codes_on_village_id"
+    t.index ["village_id"], name: "index_postal_codes_on_village_id", unique: true
   end
 
   create_table "provinces", force: :cascade do |t|
@@ -195,8 +194,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.decimal "quantity", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["item_id"], name: "index_receive_order_details_on_item_id"
-    t.index ["receive_order_id"], name: "index_receive_order_details_on_receive_order_id"
+    t.index ["item_id"], name: "index_receive_order_details_on_item_id", unique: true
+    t.index ["receive_order_id"], name: "index_receive_order_details_on_receive_order_id", unique: true
   end
 
   create_table "receive_orders", force: :cascade do |t|
@@ -204,7 +203,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.time "receive_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["store_id"], name: "index_receive_orders_on_store_id"
+    t.index ["store_id"], name: "index_receive_orders_on_store_id", unique: true
   end
 
   create_table "stores", force: :cascade do |t|
@@ -220,7 +219,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["district_id"], name: "index_sub_districts_on_district_id"
+    t.index ["district_id"], name: "index_sub_districts_on_district_id", unique: true
   end
 
   create_table "transaction_payment_details", force: :cascade do |t|
@@ -229,7 +228,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "invoice_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["transaction_payment_id"], name: "index_transaction_payment_details_on_transaction_payment_id"
+    t.index ["transaction_payment_id"], name: "index_transaction_payment_details_on_transaction_payment_id", unique: true
   end
 
   create_table "transaction_payments", force: :cascade do |t|
@@ -277,13 +276,12 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["sub_district_id"], name: "index_villages_on_sub_district_id"
+    t.index ["sub_district_id"], name: "index_villages_on_sub_district_id", unique: true
   end
 
   add_foreign_key "addresses", "customers"
   add_foreign_key "addresses", "postal_codes"
   add_foreign_key "addresses", "villages"
-  add_foreign_key "cart_details", "items"
   add_foreign_key "cart_details", "receive_order_details"
   add_foreign_key "cashier_sessions", "cashier_users"
   add_foreign_key "cashier_sessions", "stores"

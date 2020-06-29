@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.bigint "credit_card_list_id"
     t.bigint "customer_id"
     t.string "holder_name", null: false
+    t.string "card_number", null: false
     t.string "cvc", null: false
     t.date "valid_until", null: false
     t.boolean "is_active"
@@ -150,7 +151,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
 
   create_table "districts", force: :cascade do |t|
     t.bigint "city_id"
-    t.string "CreateDistricts", null: false
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["city_id"], name: "index_districts_on_city_id", unique: true

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_004506) do
+ActiveRecord::Schema.define(version: 2020_06_29_005207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,25 @@ ActiveRecord::Schema.define(version: 2020_06_29_004506) do
     t.index ["customer_id"], name: "index_addresses_on_customer_id"
     t.index ["postal_code_id"], name: "index_addresses_on_postal_code_id"
     t.index ["village_id"], name: "index_addresses_on_village_id"
+  end
+
+  create_table "cashier_sessions", force: :cascade do |t|
+    t.bigint "cashier_user_id"
+    t.bigint "store_id"
+    t.time "started_at", null: false
+    t.time "ended_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cashier_user_id"], name: "index_cashier_sessions_on_cashier_user_id"
+    t.index ["store_id"], name: "index_cashier_sessions_on_store_id"
+  end
+
+  create_table "cashier_users", force: :cascade do |t|
+    t.string "identity_numeer", null: false
+    t.string "name", null: false
+    t.string "username", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "cities", force: :cascade do |t|
@@ -137,6 +156,14 @@ ActiveRecord::Schema.define(version: 2020_06_29_004506) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "stores", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description", null: false
+    t.boolean "is_active"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "sub_districts", force: :cascade do |t|
     t.bigint "district_id"
     t.string "name", null: false
@@ -156,6 +183,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_004506) do
   add_foreign_key "addresses", "customers"
   add_foreign_key "addresses", "postal_codes"
   add_foreign_key "addresses", "villages"
+  add_foreign_key "cashier_sessions", "cashier_users"
+  add_foreign_key "cashier_sessions", "stores"
   add_foreign_key "cities", "provinces"
   add_foreign_key "credit_cards", "credit_card_lists"
   add_foreign_key "credit_cards", "customers"

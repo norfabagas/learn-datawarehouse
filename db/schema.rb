@@ -46,12 +46,12 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
   create_table "cashier_sessions", force: :cascade do |t|
     t.bigint "cashier_user_id"
     t.bigint "store_id"
-    t.time "started_at", null: false
-    t.time "ended_at", null: false
+    t.datetime "start_at", null: false
+    t.datetime "end_at", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["cashier_user_id"], name: "index_cashier_sessions_on_cashier_user_id", unique: true
-    t.index ["store_id"], name: "index_cashier_sessions_on_store_id", unique: true
+    t.index ["cashier_user_id"], name: "index_cashier_sessions_on_cashier_user_id"
+    t.index ["store_id"], name: "index_cashier_sessions_on_store_id"
   end
 
   create_table "cashier_users", force: :cascade do |t|
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["province_id"], name: "index_cities_on_province_id", unique: true
+    t.index ["province_id"], name: "index_cities_on_province_id"
   end
 
   create_table "credit_card_lists", force: :cascade do |t|
@@ -90,8 +90,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_default"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["credit_card_list_id"], name: "index_credit_cards_on_credit_card_list_id", unique: true
-    t.index ["customer_id"], name: "index_credit_cards_on_customer_id", unique: true
+    t.index ["credit_card_list_id"], name: "index_credit_cards_on_credit_card_list_id"
+    t.index ["customer_id"], name: "index_credit_cards_on_customer_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -124,8 +124,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_default"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["customer_id"], name: "index_debit_cards_on_customer_id", unique: true
-    t.index ["debit_card_list_id"], name: "index_debit_cards_on_debit_card_list_id", unique: true
+    t.index ["customer_id"], name: "index_debit_cards_on_customer_id"
+    t.index ["debit_card_list_id"], name: "index_debit_cards_on_debit_card_list_id"
   end
 
   create_table "digital_wallet_lists", force: :cascade do |t|
@@ -145,8 +145,8 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.boolean "is_default"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["customer_id"], name: "index_digital_wallets_on_customer_id", unique: true
-    t.index ["digital_wallet_list_id"], name: "index_digital_wallets_on_digital_wallet_list_id", unique: true
+    t.index ["customer_id"], name: "index_digital_wallets_on_customer_id"
+    t.index ["digital_wallet_list_id"], name: "index_digital_wallets_on_digital_wallet_list_id"
   end
 
   create_table "districts", force: :cascade do |t|
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["city_id"], name: "index_districts_on_city_id", unique: true
+    t.index ["city_id"], name: "index_districts_on_city_id"
   end
 
   create_table "item_categories", force: :cascade do |t|
@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "post_code", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["village_id"], name: "index_postal_codes_on_village_id", unique: true
+    t.index ["village_id"], name: "index_postal_codes_on_village_id"
   end
 
   create_table "provinces", force: :cascade do |t|
@@ -201,10 +201,10 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
 
   create_table "receive_orders", force: :cascade do |t|
     t.bigint "store_id"
-    t.time "receive_date", null: false
+    t.datetime "receive_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["store_id"], name: "index_receive_orders_on_store_id", unique: true
+    t.index ["store_id"], name: "index_receive_orders_on_store_id"
   end
 
   create_table "stores", force: :cascade do |t|
@@ -220,7 +220,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["district_id"], name: "index_sub_districts_on_district_id", unique: true
+    t.index ["district_id"], name: "index_sub_districts_on_district_id"
   end
 
   create_table "transaction_payment_details", force: :cascade do |t|
@@ -277,7 +277,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["sub_district_id"], name: "index_villages_on_sub_district_id", unique: true
+    t.index ["sub_district_id"], name: "index_villages_on_sub_district_id"
   end
 
   add_foreign_key "addresses", "customers"

@@ -274,8 +274,8 @@ end
 
 # Create transaction types
 TransactionType.create([
-  {transaction_name: 'Cash'},
-  {transaction_name: 'Credit'}
+  {transaction_name: 'Cash', is_active: true},
+  {transaction_name: 'Credit', is_active: true}
 ])
 
 TransactionStatus.create([
@@ -285,3 +285,73 @@ TransactionStatus.create([
   {status_name: 'Cancelled'},
 ])
 
+payment_type = ["credit_card", "debit_card", "digital_wallet"]
+
+day_iter = 0
+10.times do |index|
+  iter = index + 1
+  if iter % 2 != 0
+    day_iter = index / 2
+  else
+    
+  end
+  ro = ReceiveOrder.find(iter)
+  session = CashierSession.find(iter)
+  rods = ro.receive_order_details.ids
+  inv_date = DateTime.new(2020, 7, 6 + day_iter, 9, 0, 0)
+
+  50.times do |index|
+    customer = Customer.find(Faker::Number.between(from: 1, to: 100))
+
+    cart = Cart.create(
+      discount: Faker::Number.between(from: 0, to: 1000)
+    )
+
+    Faker::Number.between(from: 1, to: rods.count).times do |index|
+      CartDetail.create(
+        cart: cart,
+        receive_order_detail: ro.receive_order_details.where(id: rods[Faker::Number.between(from: 0, to: rods.count - 1)]).first,
+        quantity: Faker::Number.between(from: 1, to: 10)
+      )
+    end
+
+    sql = "select sum(rod.price * cd.quantity) from cart_details cd join receive_order_details rod on cd.receive_order_detail_id = rod.id where cd.cart_id = #{cart.id}"
+    total_price = ActiveRecord::Base.connection.execute(sql).sum.sum[1]
+
+    payment = TransactionPayment.create(
+      payment_sum: total_price - cart.discount
+    )
+
+    payment_method = payment_type[Faker::Number.between(from: 0, to: 2)]
+    payment_method_id = 0
+    case payment_method
+    when "credit_card"
+      payment_method_id = customer.credit_cards.first.id
+    when "debit_card"
+      payment_method_id = customer.debit_cards.first.id
+    else
+      payment_method_id = customer.digital_wallets.first.id
+    end
+
+    payment_date = inv_date + Faker::Number.between(from: 1, to: 32000).second
+    TransactionPaymentDetail.create(
+      transaction_payment: payment,
+      invoice_number: "T-" + payment_date.to_i.to_s,
+      paid_at: payment_date,
+      amount_paid: payment.payment_sum,
+      payment_type_id: payment_method_id,
+      payment_type: payment_method
+    )
+
+    Transaction.create(
+      customer: customer,
+      cart: cart,
+      transaction_type: TransactionType.find(1),
+      transaction_status: TransactionStatus.find(Faker::Number.between(from: 1, to: 4)),
+      transaction_payment: payment,
+      cashier_session: session,
+      transaction_code: "TRX-" + payment_date.to_i.to_s,
+      commit_at: payment_date
+    )
+  end
+end

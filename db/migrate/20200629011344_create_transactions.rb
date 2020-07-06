@@ -8,9 +8,7 @@ class CreateTransactions < ActiveRecord::Migration[6.0]
       t.references :transaction_payment, index: true, foreign_key: true
       t.references :cashier_session, index: true, foreign_key: true
       t.string :transaction_code, null: false
-      t.string :transaction_reference
-      t.time :commited_at
-      t.time :void_at
+      t.timestamp :commit_at
 
       t.timestamps
     end

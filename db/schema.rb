@@ -31,14 +31,17 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
   end
 
   create_table "cart_details", force: :cascade do |t|
+    t.bigint "cart_id"
     t.bigint "receive_order_detail_id"
+    t.integer "quantity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["receive_order_detail_id"], name: "index_cart_details_on_receive_order_detail_id", unique: true
+    t.index ["cart_id"], name: "index_cart_details_on_cart_id"
+    t.index ["receive_order_detail_id"], name: "index_cart_details_on_receive_order_detail_id"
   end
 
   create_table "carts", force: :cascade do |t|
-    t.decimal "discount"
+    t.integer "discount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -190,9 +193,9 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
   create_table "receive_order_details", force: :cascade do |t|
     t.bigint "receive_order_id"
     t.bigint "item_id"
-    t.decimal "cogs", null: false
-    t.decimal "price", null: false
-    t.decimal "quantity", null: false
+    t.integer "cogs", null: false
+    t.integer "price", null: false
+    t.integer "quantity", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["item_id"], name: "index_receive_order_details_on_item_id"
@@ -225,15 +228,18 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
 
   create_table "transaction_payment_details", force: :cascade do |t|
     t.bigint "transaction_payment_id"
-    t.time "invoice_date"
+    t.datetime "paid_at"
     t.string "invoice_number"
+    t.integer "amount_paid"
+    t.integer "payment_type_id"
+    t.string "payment_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["transaction_payment_id"], name: "index_transaction_payment_details_on_transaction_payment_id", unique: true
+    t.index ["transaction_payment_id"], name: "index_transaction_payment_details_on_transaction_payment_id"
   end
 
   create_table "transaction_payments", force: :cascade do |t|
-    t.decimal "payment_sum", null: false
+    t.integer "payment_sum", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -259,9 +265,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
     t.bigint "transaction_payment_id"
     t.bigint "cashier_session_id"
     t.string "transaction_code", null: false
-    t.string "transaction_reference"
-    t.time "commited_at"
-    t.time "void_at"
+    t.datetime "commit_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["cart_id"], name: "index_transactions_on_cart_id"
@@ -283,6 +287,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_011344) do
   add_foreign_key "addresses", "customers"
   add_foreign_key "addresses", "postal_codes"
   add_foreign_key "addresses", "villages"
+  add_foreign_key "cart_details", "carts"
   add_foreign_key "cart_details", "receive_order_details"
   add_foreign_key "cashier_sessions", "cashier_users"
   add_foreign_key "cashier_sessions", "stores"

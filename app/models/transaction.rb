@@ -6,7 +6,5 @@ class Transaction < ApplicationRecord
   belongs_to :transaction_payment
   belongs_to :cashier_session
   validates :transaction_code, presence: true
-  validates :transaction_reference, no_presence: true
-  validates_datetime :void_at, no_presence: true
-  validates_datetime :commited_at, no_presence: true
+  validates_datetime :commit_at, presence: true
 end

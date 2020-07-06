@@ -1,4 +1,8 @@
 class Customer < ApplicationRecord
+  has_many :digital_wallets
+  has_many :debit_cards
+  has_many :credit_cards
+  
   validates :customer_code, presence: true
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true

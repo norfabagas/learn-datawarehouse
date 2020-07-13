@@ -5,6 +5,7 @@ Province.create([
   {id: 1, name: 'DKI Jakarta'},
   {id: 2, name: 'Jawa Barat'}
 ])
+p 'Province created'
 
 City.create([
   {id: 1,province_id: 1, name: 'Jakarta Selatan'},
@@ -13,6 +14,7 @@ City.create([
   {id: 7,province_id: 2, name: 'Bogor'},
   {id: 8,province_id: 2, name: 'Depok'}
 ])
+p 'City created'
 
 District.create([
   {id: 1, city_id: 1, name: 'Kota Jakarta Selatan'},
@@ -21,6 +23,7 @@ District.create([
   {id: 4, city_id: 2, name: 'Kota Bogor'},
   {id: 5, city_id: 2, name: 'Kota Depok'}
 ])
+p 'District created'
 
 SubDistrict.create([
   {id: 1, district_id: 1, name: 'Cilandak'},
@@ -34,6 +37,7 @@ SubDistrict.create([
   {id: 9, district_id: 5, name: 'Cipayung'},
   {id: 10, district_id: 5, name: 'Cimanggis'}
 ])
+p 'Subdistrict created'
 
 Village.create([
   {id: 1, sub_district_id: 1, name: 'Cipete Selatan'},
@@ -57,6 +61,7 @@ Village.create([
   {id: 19, sub_district_id: 10, name: 'Cisalak Pasar'},
   {id: 20, sub_district_id: 10, name: 'Curug'}
 ])
+p 'Village created'
 
 PostalCode.create([
   {id: 1, village_id: 1, post_code: '12410'},
@@ -80,24 +85,28 @@ PostalCode.create([
   {id: 19, village_id: 19, post_code: '16452'},
   {id: 20, village_id: 20, post_code: '16453'}
 ])
+p 'Postal Code created'
 
 # Credit card list
 CreditCardList.create([
   {id: 1, name: 'BCA', detail: 'Bank Central Asia', is_active: true},
   {id: 2, name: 'BNI', detail: 'Bank Negara Indonesia', is_active: true}
 ])
+p 'Credit card list created'
 
 # Debit card list
 DebitCardList.create([
   {id: 1, name: 'BCA', detail: 'Bank Central Asia', is_active: true},
   {id: 2, name: 'BNI', detail: 'Bank Negara Indonesia', is_active: true}
 ])
+p 'Debit card list created'
 
 # Digital wallet list
 DigitalWalletList.create([
   {id: 1, name: 'Gopay', detail: 'Payment with Gopay', is_active: true},
   {id: 2, name: 'OVO', detail: 'Payment with OVO', is_active: true}
 ])
+p 'Digital wallet list created'
 
 # Create customer
 100.times do |index|
@@ -114,6 +123,7 @@ DigitalWalletList.create([
     }
   ])
 end
+p 'Customer created'
 
 # Create address
 100.times do |index|
@@ -130,6 +140,7 @@ end
     }
   ])
 end
+p 'Address per customer created'
 
 # Create payment
 100.times do |index|
@@ -172,6 +183,7 @@ end
     }
   ])
 end
+p 'Payments for customer created'
 
 # Create cashier user
 2.times do |index| 
@@ -194,6 +206,7 @@ end
     }
   ])
 end
+p 'Cashier user created'
 
 ItemCategory.create([
   {category_name: "Coffee"},
@@ -202,6 +215,7 @@ ItemCategory.create([
   {category_name: "Fruit"},
   {category_name: "Ice Cream"}
 ])
+p 'Item Category created'
 
 100.times do |index|
   Item.create([
@@ -212,41 +226,44 @@ ItemCategory.create([
     is_active: true
   ])
 end
+p 'Items created'
 
 # Create cashier session
-5.times do |index|
+100.times do |index|
   CashierSession.create([
     {
       cashier_user_id: 1,
       store_id: 1,
-      start_at: DateTime.new(2020, 7, 6 + index, 1, 0, 0),
-      end_at: DateTime.new(2020, 7, 6 + index, 23, 0, 0)
+      start_at: DateTime.new(2020, 7, 6, 1, 0, 0) + index,
+      end_at: DateTime.new(2020, 7, 6, 23, 0, 0) + index
     },
     {
       cashier_user_id: 2,
       store_id: 2,
-      start_at: DateTime.new(2020, 7, 6 + index, 1, 0, 0),
-      end_at: DateTime.new(2020, 7, 6 + index, 23, 0, 0)
+      start_at: DateTime.new(2020, 7, 6, 1, 0, 0) + index,
+      end_at: DateTime.new(2020, 7, 6, 23, 0, 0) + index
     }
   ])
 end
+p 'Cashier sessions created'
 
 # Receive Orders
-5.times do |index|
+100.times do |index|
   ReceiveOrder.create([
     {
       store_id: 1,
-      receive_date: DateTime.new(2020, 7, 5 + index, 21, 0, 0)
+      receive_date: DateTime.new(2020, 7, 5, 21, 0, 0) + index
     },
     {
       store_id: 2,
-      receive_date: DateTime.new(2020, 7, 5 + index, 21, 0, 0)
+      receive_date: DateTime.new(2020, 7, 5, 21, 0, 0) + index
     }
   ])
 end
+p 'Receive Order created'
 
 # Receive Order Details
-10.times do |index|
+200.times do |index|
   ReceiveOrderDetail.create([
     {
       receive_order_id: index + 1,
@@ -271,12 +288,14 @@ end
     },
   ])
 end
+p 'Receive order details created'
 
 # Create transaction types
 TransactionType.create([
   {transaction_name: 'Cash', is_active: true},
   {transaction_name: 'Credit', is_active: true}
 ])
+p 'Transaction types created'
 
 TransactionStatus.create([
   {status_name: 'Cart'},
@@ -284,11 +303,12 @@ TransactionStatus.create([
   {status_name: 'Done'},
   {status_name: 'Cancelled'},
 ])
+p 'Transaction status created'
 
 payment_type = ["credit_card", "debit_card", "digital_wallet"]
 
 day_iter = 0
-10.times do |index|
+200.times do |index|
   iter = index + 1
   if iter % 2 != 0
     day_iter = index / 2
@@ -298,13 +318,13 @@ day_iter = 0
   ro = ReceiveOrder.find(iter)
   session = CashierSession.find(iter)
   rods = ro.receive_order_details.ids
-  inv_date = DateTime.new(2020, 7, 6 + day_iter, 9, 0, 0)
+  inv_date = DateTime.new(2020, 7, 6, 9, 0, 0) + day_iter
 
-  50.times do |index|
+  100.times do |index|
     customer = Customer.find(Faker::Number.between(from: 1, to: 100))
 
     cart = Cart.create(
-      discount: Faker::Number.between(from: 0, to: 1000)
+      discount: Faker::Number.between(from: 0, to: 5000)
     )
 
     Faker::Number.between(from: 1, to: rods.count).times do |index|
@@ -336,7 +356,7 @@ day_iter = 0
     payment_date = inv_date + Faker::Number.between(from: 1, to: 32000).second
     TransactionPaymentDetail.create(
       transaction_payment: payment,
-      invoice_number: "T-" + payment_date.to_i.to_s,
+      invoice_number: "T-" + Faker::Invoice.unique.reference,
       paid_at: payment_date,
       amount_paid: payment.payment_sum,
       payment_type_id: payment_method_id,
@@ -350,8 +370,9 @@ day_iter = 0
       transaction_status: TransactionStatus.find(Faker::Number.between(from: 1, to: 4)),
       transaction_payment: payment,
       cashier_session: session,
-      transaction_code: "TRX-" + payment_date.to_i.to_s,
+      transaction_code: "TRX-" + Faker::Invoice.unique.reference,
       commit_at: payment_date
     )
   end
 end
+p 'Transactions created'
